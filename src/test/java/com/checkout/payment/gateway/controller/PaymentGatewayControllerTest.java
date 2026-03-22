@@ -34,7 +34,7 @@ class PaymentGatewayControllerTest {
     payment.setStatus(PaymentStatus.AUTHORIZED);
     payment.setExpiryMonth(12);
     payment.setExpiryYear(2024);
-    payment.setCardNumberLastFour(4321);
+    payment.setCardNumberLastFour("4321");
 
     paymentsRepository.save(payment);
 
@@ -50,8 +50,10 @@ class PaymentGatewayControllerTest {
 
   @Test
   void whenPaymentWithIdDoesNotExistThen404IsReturned() throws Exception {
-    mvc.perform(MockMvcRequestBuilders.get("/payment/" + UUID.randomUUID()))
+    UUID paymentId = UUID.randomUUID();
+    mvc.perform(MockMvcRequestBuilders.get("/payment/" + paymentId))
         .andExpect(status().isNotFound())
-        .andExpect(jsonPath("$.message").value("Page not found"));
+        .andExpect(jsonPath("$.message")
+            .value("Payment not found with id: " + paymentId));
   }
 }
