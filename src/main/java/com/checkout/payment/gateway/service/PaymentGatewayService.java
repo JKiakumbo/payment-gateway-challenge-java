@@ -22,7 +22,7 @@ public class PaymentGatewayService {
 
   public PostPaymentResponse getPaymentById(UUID id) {
     LOG.debug("Requesting access to to payment with ID {}", id);
-    return paymentsRepository.get(id).orElseThrow(() -> new EventProcessingException("Invalid ID"));
+    return paymentsRepository.findById(id).orElseThrow(() -> new EventProcessingException("Invalid ID"));
   }
 
   public UUID processPayment(PostPaymentRequest paymentRequest) {
